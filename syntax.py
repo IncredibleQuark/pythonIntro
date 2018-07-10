@@ -128,3 +128,33 @@ sentence = sentence + "333556"
 print(sentence)
 new = re.sub('[0-9]', '*', sentence)
 print(new)
+
+
+# CLASSES
+
+class Car:
+
+    wheels = 4
+
+    def __init__(self, doors, color):
+        self.doors = doors
+        self.color = color
+
+    def get_wheels(self):
+        return self.wheels
+
+    def get_doors(self):
+        return self.doors
+
+    def get_color(self):
+        return self.color
+
+
+car = Car(4, 'blue')
+print(car.get_wheels())
+
+car2 = Car(3, 'green')
+print(car2.get_color())
+
+car3 = Car(5, 'red')
+print(car3.get_doors())
