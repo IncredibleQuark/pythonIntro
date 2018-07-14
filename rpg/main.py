@@ -2,6 +2,14 @@ from classes.game import Person, BColors
 from classes.magic import Spell
 from classes.inventory import Item
 
+print("\n\n")
+print("NAME				 HP									  	 MP")
+print("					 _________________________				 __________ ")
+print(BColors.BOLD + "KRUKU:		460/460 |" + BColors.OKGREEN + "█████████████████████████" + BColors.ENDC +
+	  "|       65/65 |" + BColors.OKBLUE + "██████████" + BColors.ENDC + "|")
+
+print("\n")
+
 # Create Black Magic
 fire = Spell("Fire", 10, 50, "black")
 thunder = Spell("Thunder", 30, 70, "black")
@@ -23,7 +31,9 @@ hielixer = Item("MegaElixer", "elixer", "Fully restores party's HP/MP", 9999)
 grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
 
 player_magic = [fire, thunder, blizzard, meteor, cure, cura]
-player_items = [potion, elixer]
+player_items = [{"item": potion, "quantity": 5},
+				{"item": elixer, "quantity": 2},
+				{"item": grenade, "quantity": 1}]
 player = Person(500, 80, 60, 35, player_magic, player_items)
 enemy = Person(800, 70, 45, 25, [], [potion, elixer])
 
@@ -68,16 +78,29 @@ while running:
 
 	elif index == 2:
 		player.choose_item()
-		item_choice = int(input("Choose item: "))
+		item_choice = int(input("Choose item: ")) - 1
 
 		if item_choice == -1:
 			continue
 
-		item = player.items[item_choice]
+		item = player.items[item_choice]["item"]
+
+		if player.items[item_choice]["quantity"] == 0:
+			print(BColors.FAIL + "\n" + "You don't have anymore " + str(player.items[item_choice]["item"].name) + BColors.ENDC)
+			continue
+
+		player.items[item_choice]["quantity"] -= 1
 
 		if item.type == "potion":
 			player.heal(item.prop)
 			print(BColors.OKGREEN + "\n" + item.name + " heals for", str(item.prop), "HP" + BColors.ENDC)
+		elif item.type == "elixer":
+			player.hp = player.maxhp
+			player.mp = player.maxmp
+			print(BColors.OKGREEN + "\n" + item.name + " fully restores HP/MP" + BColors.ENDC)
+		elif item.type == "attack":
+			enemy.take_damage(item.prop)
+			print(BColors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage" + BColors.ENDC)
 
 	enemy_choice = 1
 	enemy_dmg = enemy.generate_damage()
