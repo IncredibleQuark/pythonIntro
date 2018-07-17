@@ -1,6 +1,7 @@
 from classes.game import Person, BColors
 from classes.magic import Spell
 from classes.inventory import Item
+import random
 
 # Create Black Magic
 fire = Spell("Fire", 10, 50, "black")
@@ -30,7 +31,7 @@ player_items = [{"item": potion, "quantity": 5},
 player1 = Person("Bob ", 1500, 355, 166, 200, player_magic, player_items)
 player2 = Person("Dave ", 1800, 420, 150, 150, player_magic, player_items)
 player3 = Person("Monica ", 1990, 228, 250, 50, player_magic, player_items)
-enemy = Person("Roger ", 2800, 900, 520, 120, [], [])
+enemy = Person("Roger ", 11000, 900, 520, 120, [], [])
 
 players = [player1, player2, player3]
 
@@ -40,9 +41,11 @@ print(BColors.FAIL + BColors.BOLD + "AN ENEMY ATTACKS!" + BColors.ENDC)
 
 while running:
 	print("================")
-	print("NAME				 HP									  	 MP")
+	print("NAME		HP									  	 	MP")
 	for player in players:
 		player.get_stats()
+
+	enemy.get_enemy_stats()
 
 	print("\n")
 
@@ -100,17 +103,23 @@ while running:
 				player.heal(item.prop)
 				print(BColors.OKGREEN + "\n" + item.name + " heals for", str(item.prop), "HP" + BColors.ENDC)
 			elif item.type == "elixer":
-				player.hp = player.maxhp
-				player.mp = player.maxmp
+				if item.name == "MegaElixer":
+					for i in players:
+						i.hp = i.maxhp
+						i.mp = i.maxmp
+				else:
+					player.hp = player.maxhp
+					player.mp = player.maxmp
 				print(BColors.OKGREEN + "\n" + item.name + " fully restores HP/MP" + BColors.ENDC)
 			elif item.type == "attack":
 				enemy.take_damage(item.prop)
 				print(BColors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage" + BColors.ENDC)
 
 	enemy_choice = 1
+	target = random.randrange(0, len(players) - 1)
 	enemy_dmg = enemy.generate_damage()
-	player1.take_damage(enemy_dmg)
-	print("Enemy attacks for", enemy_dmg, "\n")
+	players[target].take_damage(enemy_dmg)
+	print("Enemy attacks " + BColors.FAIL + players[target].get_name() + BColors.ENDC + " for", enemy_dmg, "\n")
 
 	print("-----------------------------------------")
 	print("Enemy HP:" + BColors.FAIL + str(enemy.get_hp()) + "/" + str(enemy.get_max_hp()) + BColors.ENDC + "\n")
