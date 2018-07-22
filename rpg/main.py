@@ -64,10 +64,10 @@ while running:
 			enemy = player.choose_target(enemies)
 
 			enemies[enemy].take_damage(dmg)
-			print("You attacked " + enemies[enemy].name + "for", dmg, "points of damage.")
+			print("You attacked " + enemies[enemy].name.replace(" ", "") + "for", dmg, "points of damage.")
 
 			if enemies[enemy].get_hp() == 0:
-				print(enemies[enemy].name + " has died.")
+				print(enemies[enemy].name.replace(" ", "") + " has died.")
 				del enemies[enemy]
 
 		elif index == 1:
@@ -93,10 +93,10 @@ while running:
 			elif spell.type == "black":
 				enemy = player.choose_target(enemies)
 				enemies[enemy].take_damage(magic_dmg)
-				print(BColors.OKBLUE + "\n" + spell.name + " deals " + str(magic_dmg), "magic damage to" + enemies[enemy].name + BColors.ENDC)
+				print(BColors.OKBLUE + "\n" + spell.name + " deals " + str(magic_dmg), "magic damage to" + enemies[enemy].name.replace(" ", "") + BColors.ENDC)
 
 				if enemies[enemy].get_hp() == 0:
-					print(enemies[enemy].name + "has died.")
+					print(enemies[enemy].name.replace(" ", "") + "has died.")
 					del enemies[enemy]
 
 		elif index == 2:
@@ -130,10 +130,10 @@ while running:
 			elif item.type == "attack":
 				enemy = player.choose_target(enemies)
 				enemy.take_damage(item.prop)
-				print(BColors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage to " + enemies[enemy].name + BColors.ENDC)
+				print(BColors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage to " + enemies[enemy].name.replace(" ", "") + BColors.ENDC)
 
 				if enemies[enemy].get_hp() == 0:
-					print(enemies[enemy].name + " has died.")
+					print(enemies[enemy].name.replace(" ", "") + " has died.")
 					del enemies[enemy]
 
 	enemy_choice = 1
@@ -141,12 +141,6 @@ while running:
 	enemy_dmg = enemies[0].generate_damage()
 	players[target].take_damage(enemy_dmg)
 	print("Enemy attacks " + BColors.FAIL + players[target].get_name() + BColors.ENDC + " for", enemy_dmg, "\n")
-
-	# print("-----------------------------------------")
-	# print("Enemy HP:" + BColors.FAIL + str(enemy.get_hp()) + "/" + str(enemy.get_max_hp()) + BColors.ENDC + "\n")
-	#
-	# print("Your HP:" + BColors.OKGREEN + str(player.get_hp()) + "/" + str(player.get_max_hp()) + BColors.ENDC)
-	# print("Your MP:" + BColors.OKBLUE + str(player.get_mp()) + "/" + str(player.get_max_mp()) + BColors.ENDC)
 
 	defeated_enemies = 0
 	defeated_players = 0
